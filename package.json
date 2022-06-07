@@ -1,0 +1,23 @@
+{
+  "name": "@capri-js/example-preact",
+  "private": true,
+  "description": "Capri Preact example",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build && vite build --ssr",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@capri-js/preact-router": "^4.0.2",
+    "preact": "^10.7.2",
+    "react-iso": "^1.0.3"
+  },
+  "devDependencies": {
+    "@capri-js/preact": "*",
+    "@preact/preset-vite": "^2.2.0",
+    "vite": "^2.9.9"
+  }
+}
