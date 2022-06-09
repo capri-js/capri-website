@@ -12,5 +12,5 @@
     "jsx": "preserve",
     "jsxImportSource": "preact"
   },
-  "include": ["src/**/*", "contentlayer.config.ts", ".contentlayer/generated"]
+  "include": ["src/**/*", "contentlayer.config.ts"]
 }
