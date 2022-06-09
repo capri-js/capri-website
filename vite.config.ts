@@ -12,5 +12,18 @@ export default {
     capri({
       spa: "/preview",
     }),
+    {
+      name: "print-options",
+      options(options) {
+        console.log(
+          "ENV -----------------------------------------------------"
+        );
+        console.log(process.env);
+        console.log(
+          "OPTIONS -------------------------------------------------"
+        );
+        console.log(options);
+      },
+    },
   ],
 };
