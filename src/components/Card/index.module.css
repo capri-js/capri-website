@@ -1,0 +1,26 @@
+.root {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 0.5rem;
+  border: 1px solid var(--devider);
+  background: var(--light);
+  padding: 0.8rem;
+  &:hover {
+    border-color: var(--secondary);
+    & .title {
+      color: var(--secondary);
+    }
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  color: var(--darkest);
+  font-weight: 600;
+}
+
+.content {
+  color: var(--neutral);
+}

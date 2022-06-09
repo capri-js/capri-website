@@ -1,0 +1,9 @@
+.root {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: none;
+  @media (max-width: 720px) {
+    display: block;
+  }
+}

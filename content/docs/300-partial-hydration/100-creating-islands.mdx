@@ -1,0 +1,26 @@
+---
+title: Creating islands
+---
+
+Create a regular React/Preact/SolidJS component and name it `*.island.(tsx|jsx)`.
+
+Import the `island` function from `virtual:island` to create a higher order component like this:
+
+```tsx
+import { useState } from "preact/hooks";
+import { island } from "virtual:island";
+
+export function Counter() {
+  const [counter, setCounter] = useState(0);
+  return (
+    <div>
+      {counter}
+      <button onClick={() => setCounter((c) => c + 1)}>+</button>
+    </div>
+  );
+}
+
+export const CounterIsland = island(Counter);
+```
+
+Use that wrapped component in your app to opt in to client-side hydration for that particular subtree.

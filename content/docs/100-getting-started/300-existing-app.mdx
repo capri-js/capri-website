@@ -1,0 +1,38 @@
+---
+title: Adding to an existing Vite app
+---
+
+If you already have a working Vite single page app, you can render it as static site by following these steps:
+
+### 1. Install the Capri Vite plugin for your framework of choice:
+
+```bash
+npm install --save-dev @capri-js/react` # or preact or solid
+```
+
+### 2. Add the plugin to your `vite.config.ts` file:
+
+```ts
+import capri from "@capri-js/react";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [react(), capri()],
+});
+```
+
+### 3. Modify the build script in your `package.json`:
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && vite build --ssr"
+  }
+}
+```
+
+### 4. Add a server entry scripts
+
+Finally you have to provide a [server entry script](/docs/project-structure/server-entry) to tell Capri how to render your app as html.

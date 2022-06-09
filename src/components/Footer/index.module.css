@@ -1,0 +1,7 @@
+.root {
+  border-top: 1px solid var(--devider);
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--neutral);
+}

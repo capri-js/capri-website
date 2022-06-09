@@ -1,0 +1,15 @@
+.root {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin-top: 3rem;
+  & a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    padding: 0.5em 2em;
+  }
+}

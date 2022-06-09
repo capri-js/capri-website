@@ -1,0 +1,75 @@
+.root {
+  flex: 0 0 300px;
+  display: flex;
+  position: relative;
+  border-right: 1px solid var(--devider);
+  &[data-menu="open"] {
+    transition: transform 0.2s ease-out;
+    transform: translateX(0);
+  }
+  &[data-menu="closed"] {
+    transition: transform 0.2s ease-in;
+  }
+  @media (max-width: 720px) {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 280px;
+    bottom: 0;
+    background: #fff;
+    z-index: 1;
+    transform: translateX(-100%);
+  }
+}
+
+.close {
+  border: none;
+  background: transparent;
+  position: absolute;
+  right: 10px;
+  top: 16px;
+  z-index: 1;
+  cursor: pointer;
+  display: none;
+  @media (max-width: 720px) {
+    display: block;
+  }
+}
+
+.nav {
+  list-style: none;
+  margin: 0;
+  padding: 1em 0 0;
+  & li {
+    margin: 0;
+    padding: 0;
+  }
+  & a {
+    display: block;
+    text-decoration: none;
+    padding: 0.5em 0.5em 0.5em 1.5em;
+    font-weight: 600;
+    transition: color 0.2s;
+    color: inherit;
+    &:hover {
+      color: var(--secondary);
+    }
+  }
+  & .active {
+    color: var(--secondary);
+  }
+  & .activeRoot {
+    color: var(--darkest);
+    box-shadow: inset 6px 0 0 0 var(--highlight);
+  }
+}
+
+.subNav {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1em;
+  & a {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+}

@@ -1,11 +1,14 @@
-import "./App.css";
-
 // eslint-disable-next-line import/no-named-as-default
 import Router from "@capri-js/preact-router";
 
-import { About } from "./About";
+import { Doc } from "./Doc";
+import { Preview } from "./Preview";
+import { Header } from "./components/Header";
+import { Root } from "./components/Root";
+
+import "./global.css";
+import "./highlight.css";
 import { Home } from "./Home";
-import { Preview, PreviewBanner } from "./Preview";
 
 type Props = {
   url?: string;
@@ -13,13 +16,12 @@ type Props = {
 
 export function App({ url }: Props) {
   return (
-    <div>
-      {!url && <PreviewBanner />}
+    <Root>
       <Router url={url}>
         <Home path="/" />
-        <About path="/about" />
+        <Doc path="/docs/:slug*" />
         <Preview path="/preview" />
       </Router>
-    </div>
+    </Root>
   );
 }

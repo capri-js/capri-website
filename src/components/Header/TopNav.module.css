@@ -1,0 +1,28 @@
+.root {
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 0.9em;
+  & ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0 0 0 -0.4em;
+    list-style: none;
+  }
+  & li {
+    margin: 0.2em 0.6em;
+  }
+  & a {
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+    color: inherit;
+    &:hover {
+      color: var(--secondary);
+    }
+  }
+  @media (max-width: 720px) {
+    display: none;
+  }
+}

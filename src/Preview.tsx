@@ -18,5 +18,9 @@ export function Preview() {
  * Component to display a banner when the site is viewed as SPA.
  */
 export function PreviewBanner() {
-  return <div class="banner">Preview Mode</div>;
+  return (
+    <div style={{ color: "#fff", background: "var(--notice)" }}>
+      Preview Mode
+    </div>
+  );
 }

@@ -6,6 +6,6 @@ import { App } from "./App";
 export const render: RenderFunction = async (url: string) => {
   const res = await prerender(<App url={url} />);
   return {
-    "#app": res.html,
+    "#root": res.html,
   };
 };

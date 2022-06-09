@@ -1,0 +1,20 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 1.5rem;
+  border-bottom: 1px solid var(--devider);
+  gap: 0.5em;
+}
+
+.logo {
+  flex: 1 1 20vw;
+  display: flex;
+  align-items: center;
+  margin: 0.5em 0;
+  & img {
+    max-width: clamp(165px, 20vw, 282px);
+    height: auto;
+  }
+}

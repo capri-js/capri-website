@@ -1,0 +1,12 @@
+---
+title: Server entry
+---
+
+To generate static markup, Capri expects a file called `<your-entry>.server.*` right next to your client side entry script. If for example your `index.html` points to `./src/main.tsx` Capri looks for a file called `./src/main.server.tsx`. Take a look at the different framework demos for a real world example.
+
+The render function receives the pathname of the page to be rendered as argument and returns the markup to be injected into the index.html file.
+The markup is returned as object with CSS selectors as keys. This makes it possible to inject different chunks of HTML into different locations of the template, for example `head` and `#root`.
+
+## Paths to prerender
+
+Capri always starts with rendering `"/"` and proceeds with all local links it encounters. In order to render paths that are not discoverable via links, you can add an async `getStaticPaths()` function to your server entry script.
