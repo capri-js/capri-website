@@ -1,11 +1,17 @@
 .root {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
   text-decoration: none;
-  color: inherit;
+  color: var(--neutral);
+  font-size: 0.9rem;
+  line-height: 1.4;
   border-radius: 0.5rem;
   border: 1px solid var(--devider);
   background: var(--light);
-  padding: 0.8rem;
+  padding: 1.2rem;
+  & > * {
+    margin: 0;
+  }
   &:hover {
     border-color: var(--secondary);
     & .title {
@@ -19,8 +25,7 @@
   align-items: center;
   color: var(--darkest);
   font-weight: 600;
-}
-
-.content {
-  color: var(--neutral);
+  font-size: 1rem;
+  line-height: 1.1;
+  margin-bottom: 0.3em;
 }

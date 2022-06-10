@@ -14,7 +14,7 @@ export function Card({ link, title, children }: Props) {
         {title}
         <ChevronRight />
       </div>
-      <div class={styles.content}>{children}</div>
+      {children}
     </a>
   );
 }
