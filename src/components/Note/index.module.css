@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  color: var(--neutral);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  border-radius: 0.5rem;
+  border: 1px solid var(--devider);
+  background: var(--light);
+  padding: 0.8rem;
+  & p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  color: var(--darkest);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.1;
+  margin-bottom: 0.3em;
+  & svg {
+    color: var(--highlight);
+    margin-right: 0.5em;
+  }
+}

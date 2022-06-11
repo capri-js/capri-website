@@ -8,9 +8,11 @@ import { TwoCols } from "./components/TwoCols";
 import { SideNav } from "./components/SideNav";
 import { Prose } from "./components/Prose";
 import { Header } from "./components/Header";
+import { Note } from "./components/Note";
 
 const mdxComponents = {
   Card,
+  Note,
   TwoCols,
 };
 
