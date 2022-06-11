@@ -2,8 +2,6 @@
 import Router from "@capri-js/preact-router";
 
 import { Doc } from "./Doc";
-import { Preview } from "./Preview";
-import { Header } from "./components/Header";
 import { Root } from "./components/Root";
 
 import "./global.css";
@@ -20,7 +18,6 @@ export function App({ url }: Props) {
       <Router url={url}>
         <Home path="/" />
         <Doc path="/docs/:slug*" />
-        <Preview path="/preview" />
       </Router>
     </Root>
   );
