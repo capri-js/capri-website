@@ -2,11 +2,65 @@
 title: Server entry
 ---
 
-To generate static markup, Capri expects a file called `<your-entry>.server.*` right next to your client side entry script. If for example your `index.html` points to `./src/main.tsx` Capri looks for a file called `./src/main.server.tsx`. Take a look at the different framework demos for a real world example.
+To generate static markup, Capri expects a file called `<your-entry>.server.*` right next to your
+client side entry script. If for example your `index.html` points to `./src/main.tsx` Capri looks
+for a file called `./src/main.server.tsx`.
 
-The render function receives the pathname of the page to be rendered as argument and returns the markup to be injected into the index.html file.
-The markup is returned as object with CSS selectors as keys. This makes it possible to inject different chunks of HTML into different locations of the template, for example `head` and `#root`.
+## The render function
+
+The render function receives the pathname of the page to be rendered as argument and returns the
+markup to be injected into the index.html file.
+
+The markup is returned as object with CSS selectors as keys. This makes it possible to inject
+different chunks of HTML into different locations of the template, for example `head` and `#root`.
+
+You can find examples for different frameworks in the
+[GitHub repo](https://github.com/capri-js/capri/tree/main/examples).
+This is what a typical render function for React looks like:
+
+```ts
+import type { RenderFunction } from "@capri-js/react";
+
+import { StrictMode } from "react";
+import renderToString from "react-render-to-string";
+import { StaticRouter } from "react-router-dom/server.js";
+
+import { App } from "./App";
+
+export const render: RenderFunction = async (url: string) => {
+  return {
+    "#app": await renderToString(
+      <StrictMode>
+        <StaticRouter location={url}>
+          <App />
+        </StaticRouter>
+      </StrictMode>
+    ),
+  };
+};
+```
+
+<Note>
+  This example uses the
+  [react-render-to-string](https://www.npmjs.com/package/react-render-to-string)
+  package instead of the synchronous
+  [ReactDOMServer.renderToStaticMarkup](https://reactjs.org/docs/react-dom-server.html#rendertostaticmarkup)
+  to support data loading via suspense.
+</Note>
 
 ## Paths to prerender
 
-Capri always starts with rendering `"/"` and proceeds with all local links it encounters. In order to render paths that are not discoverable via links, you can add an async `getStaticPaths()` function to your server entry script.
+Capri always starts with rendering `"/"` and proceeds with all local links it encounters.
+In order to render paths that are **not discoverable via links**, you can add an async `getStaticPaths()`
+function to your server entry script.
+
+```ts
+export async function getStaticPaths() {
+  return ["/some-page", "/another-page"];
+}
+```
+
+<Note>
+  In most cases you won't need to implement this function as Capri will
+  automatically follow all links and prerender them.
+</Note>

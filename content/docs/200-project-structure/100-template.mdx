@@ -3,6 +3,43 @@ title: index.html
 ---
 
 The `index.html` file in your project's root directory is used as template for all your rendered pages.
-This is where you can add common things like a viewport meta tag or a favicon.
+This is where you can add common things like a viewport meta tag or a favicon. But most importantly,
+it needs to contain a script tag that points to your JavaScript code:
 
-This file needs to contain a script tag that points to your JavaScript code. Refer to the [Vite docs](https://vitejs.dev/guide/#index-html-and-project-root) to learn how HTML files are processed.
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/src/favicon.svg" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+```
+
+Note how the HTML code does not contain any placeholders. In order for Capri to know where your rendered
+HTML should be injected, the `render` function exported by your
+[server entry script](/docs/project-structure/server-entry) must specify a CSS selector like `#root`:
+
+```ts
+import { renderAppToString } from "some-framework";
+import { collectHeadContent } from "some-library";
+
+export async function render(url: string) {
+  const appHtml = await renderAppToString(url);
+  const headContent = collectHeadContent();
+  return {
+    head: headContent,
+    "#root": appHtml,
+  };
+}
+```
+
+This allows you to inject different chunks of HTML at different places. You can for example use a library
+like [hoofd](https://github.com/JoviDeCroock/hoofd) to collect title and meta tags and append them to the
+document head. Another common use-case is the collection of styles, for example when using
+[styled-components](https://styled-components.com/docs/advanced#server-side-rendering).

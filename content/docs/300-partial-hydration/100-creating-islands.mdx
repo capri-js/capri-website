@@ -7,10 +7,12 @@ Create a regular React/Preact/SolidJS component and name it `*.island.(tsx|jsx)`
 Import the `island` function from `virtual:island` to create a higher order component like this:
 
 ```tsx
+// Counter.island.tsx
+
 import { useState } from "preact/hooks";
 import { island } from "virtual:island";
 
-export function Counter() {
+function Counter() {
   const [counter, setCounter] = useState(0);
   return (
     <div>
@@ -23,4 +25,39 @@ export function Counter() {
 export const CounterIsland = island(Counter);
 ```
 
-Use that wrapped component in your app to opt in to client-side hydration for that particular subtree.
+<Note>
+  The name of the export doesn't matter, you can also use a default export if
+  you want.
+</Note>
+
+Use that wrapped component in your app to opt in to client-side hydration for that particular subtree:
+
+```ts
+// App.tsx
+
+import { CounterIsland } from "./Counter.island";
+
+export function App() {
+  return (
+    <main>
+      <h1>
+        Welcome to <i>Capri</i>
+      </h1>
+      <div>This page is static, but contains some dynamic parts.</div>
+      <div>
+        Here is a simple counter: <CounterIsland />
+      </div>
+      <div>
+        And here is another one, independent from the one above:
+        <CounterIsland start={100} />
+      </div>
+    </main>
+  );
+}
+```
+
+<Note title="Stay tuned">
+  We are planing to add more fine grained control about when the hydration
+  happens. For example only when the island enters the viewport or when a
+  certain media query matches.
+</Note>

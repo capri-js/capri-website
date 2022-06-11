@@ -2,4 +2,39 @@
 title: Client entry
 ---
 
-One of Capri's key features is that it allows you to render your site not only as static HTML, but also as a static single page app. While this is primarily intended as a way to get live previews of your content when working with a CMS, it also helps to speed up the development process as it allows you to take advantage of Vite's development server and hot reloading capabilities.
+One of Capri's key features is that it allows you to render your site not only as static HTML,
+but also as a static single page app. While this is primarily intended as a way to get
+live previews of your content when working with a CMS, it also helps to speed up the
+development process as it allows you to take advantage of Vite's development server and
+hot reloading capabilities.
+
+This is how a typical client entry script looks like for React:
+
+```ts
+import { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+
+import { App } from "./App";
+
+ReactDOM.createRoot(document.getElementById("app")!).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>
+);
+```
+
+As you can see, there is nothing special here. It looks exactly like for any other
+regular single page app. You can find examples for other frameworks in the
+[GitHub repo](https://github.com/capri-js/capri/tree/main/examples).
+
+<Note title="Experimental">
+  You can also omit this file and let your index.html point directly to the
+  server entry file. We are currently experimenting with an SSR mode where all
+  requests are served by a server process or serverless function. While this is
+  easy to implement, we are still hesitant whether this should be part of Capri
+  and will probably focus on SSG for now to keep the complexity as low as
+  possible.
+</Note>
