@@ -4,4 +4,11 @@
   text-align: center;
   font-size: 0.9rem;
   color: var(--neutral);
+  & a {
+    text-decoration: none;
+    color: inherit;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

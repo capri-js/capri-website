@@ -9,6 +9,7 @@ import { SideNav } from "./components/SideNav";
 import { Prose } from "./components/Prose";
 import { Header } from "./components/Header";
 import { Note } from "./components/Note";
+import { Footer } from "./components/Footer";
 
 const mdxComponents = {
   Card,
@@ -34,6 +35,7 @@ export function Doc({ url }: Props) {
             <h1>{doc.title}</h1>
             <Mdx components={mdxComponents} />
           </Prose>
+          <Footer />
         </Scroll>
       </SplitView>
     </>

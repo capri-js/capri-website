@@ -33,6 +33,26 @@ export const Doc = defineDocumentType(() => ({
   },
 }));
 
+export const Page = defineDocumentType(() => ({
+  name: "Page",
+  filePathPattern: `*.mdx`,
+  contentType: "mdx",
+  fields: {
+    title: {
+      type: "string",
+      description: "The page title",
+      required: true,
+    },
+  },
+  computedFields: {
+    url: {
+      type: "string",
+      resolve: (page) =>
+        `/${page._raw.flattenedPath}`.replace("index", "").replace(/\d+-/g, ""),
+    },
+  },
+}));
+
 function getOrder(name: string) {
   const [, order] = /\b(\d+)/.exec(name) ?? [];
   return order ? parseInt(order) : 0;
@@ -40,7 +60,7 @@ function getOrder(name: string) {
 
 export default makeSource({
   contentDirPath: "content",
-  documentTypes: [Doc],
+  documentTypes: [Doc, Page],
   disableImportAliasWarning: true,
   mdx: {
     rehypePlugins: [
