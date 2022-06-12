@@ -11,5 +11,10 @@
     border: 2px solid currentColor;
     border-radius: 4px;
     padding: 0.5em 2em;
+    &:first-child {
+      color: var(--darkest);
+      background: #fff;
+      border-color: #fff;
+    }
   }
 }

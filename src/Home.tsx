@@ -33,8 +33,8 @@ export function Home() {
           </GridItem>
         </Grid>
         <CallToAction>
-          {/* <a href="/docs/motivation">Learn more</a> */}
           <a href="/docs/getting-started">Get started</a>
+          <a href="/docs/why/motivation">Learn more</a>
         </CallToAction>
       </Section>
       <Section>
