@@ -40,7 +40,9 @@ export function Home() {
       <Section>
         <Center>
           <div>Sponsored by</div>
-          <img src="/lionizers.svg" alt="Lionizers" width="183" height="47" />
+          <a href="https://lionizers.com" target="_blank">
+            <img src="/lionizers.svg" alt="Lionizers" width="183" height="47" />
+          </a>
         </Center>
       </Section>
       <Footer />
