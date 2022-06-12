@@ -1,0 +1,54 @@
+---
+title: Capri vs. X
+---
+
+There a lot of different options when it comes to generating static websites. Unfortunately none of
+them makes it particularly easy to implement Capri's unique set of features. Read how Capri compares
+to some of its most popular alternatives:
+
+## Astro
+
+[Astro](https://astro.build/) is a great option for generating static sites with partial hydration.
+It even lets you mix components from various frameworks and supports some advanced hydration strategies
+like using intersection observers or media queries.
+
+Unfortunately, components can only be marked as islands from within .astro templates.
+Therefore all static parts of your site that are ancestors of an island have to be written as
+Astro components, too.
+
+While Astro component are great (think of them as JSX files with JavaScript frontmatter) they feel
+somehow alien in a React environment.
+
+The main idea behind Capri is to introduce as few new concepts as possible. This is also why Capri
+does not ship with a built-in router, but lets you choose whatever routing solution you want.
+
+## Next.js
+
+While [Next.js](https://nextjs.org/) supports a lot of different rendering strategies, it is
+[still](https://github.com/vercel/next.js/issues/10344#issuecomment-580701566) lacking support for partial hydration.
+There are [ways to achieve this](https://medium.com/@luke_schmuke/how-we-achieved-the-best-web-performance-with-partial-hydration-20fab9c808d5)
+but the developer experience could be a lot better as there is no out-of-the-box support.
+
+Another thing that cannot be done without hacks is generating a full single page app
+next to the statically rendered pages.
+
+## 11ty
+
+[Eleventy](https://www.11ty.dev/) is known for its simplicity as well as its versatility. It is therefore
+not surprising that [with a](https://markus.oberlehner.net/blog/setting-up-eleventy-with-preact-and-htm/)
+[little work](https://markus.oberlehner.net/blog/building-partially-hydrated-progressively-enhanced-static-websites-with-isomorphic-preact-and-eleventy/)
+one can achieve very similar results. And if you don't mind an
+[SSR-based approach](https://www.11ty.dev/docs/plugins/serverless/), you can even get live previews.
+So while this certainly is a viable solution, the developer experience could be much better for this
+particular use case.
+
+## îles
+
+As its french name might suggest, [îles](https://iles-docs.netlify.app/) is also based on Vite.
+It is quite similar to Astro, but pages are written in Vue or MDX instead. You can write islands using
+Preact (or various other frameworks) but as with Astro, the static parts above have to be written in Vue or MDX.
+
+## Others
+
+You can learn more about these and other available options in this
+[excellent article](https://ajcwebdev.com/what-is-partial-hydration-and-why-is-everyone-talking-about-it).

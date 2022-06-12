@@ -1,6 +1,14 @@
 ---
-title: Creating islands
+title: Partial hydration
 ---
+
+One of Capri's core features is that it supports partial hydration, also known
+as [islands architecture](https://jasonformat.com/islands-architecture/). This
+means that Capri sites will by default ship zero KB of JavaScript to the
+browser. If you need some interactivity on your pages you can selectively
+_hydrate_ these components.
+
+## Creating islands
 
 Create a regular React/Preact/SolidJS component and name it `*.island.(tsx|jsx)`.
 

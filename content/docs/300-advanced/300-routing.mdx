@@ -1,0 +1,20 @@
+---
+title: Routing
+---
+
+Capri does not come with a built-in routing solution. Instead it let's you choose
+whatever routing library you want.
+
+Popular options are [React Router](https://reactrouter.com/),
+[Wouter](https://www.npmjs.com/package/wouter),
+[preact-router](https://www.npmjs.com/package/preact-router)
+or Solid's [solid-app-router](https://github.com/solidjs/solid-app-router).
+
+Depending on your site, you might not even need a router at all.
+For example it's a totally valid approch to look up the content
+for the requested URL and decide how to render it based on its data.
+
+We believe that choosing a rendering pattern like SSG should not enforce a
+particular way of building your site. It should instead feel as if you were
+building a regular SPA or SSR application. In fact this is what allows Capri
+to generate a preview SPA along your static HTML pages.

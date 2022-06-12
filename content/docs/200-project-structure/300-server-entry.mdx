@@ -47,20 +47,3 @@ export const render: RenderFunction = async (url: string) => {
   [ReactDOMServer.renderToStaticMarkup](https://reactjs.org/docs/react-dom-server.html#rendertostaticmarkup)
   to support data loading via suspense.
 </Note>
-
-## Paths to prerender
-
-Capri always starts with rendering `"/"` and proceeds with all local links it encounters.
-In order to render paths that are **not discoverable via links**, you can add an async `getStaticPaths()`
-function to your server entry script.
-
-```ts
-export async function getStaticPaths() {
-  return ["/some-page", "/another-page"];
-}
-```
-
-<Note>
-  In most cases you won't need to implement this function as Capri will
-  automatically follow all links and prerender them.
-</Note>

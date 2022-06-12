@@ -1,0 +1,33 @@
+---
+title: Motivation
+---
+
+Capri was created in search of the most carbon-friendly way to build a medium-sized website
+with mostly static content.
+
+When looking a different [rendering patterns](https://www.patterns.dev/posts/#rendering-patterns),
+static site generation (SSG) is clearly the most resource efficient one, as computation only happens
+when the content is updated. And since all the HTML is already rendered, the processing required on
+the client is also reduced to a minimum.
+
+We could do it like [motherfuckingwebsite.com](https://motherfuckingwebsite.com/) and call it a day,
+but let's set some realistic constraints:
+
+- Use a component-based workflow
+- Use modern frontend tooling
+- Selectively add interactivity
+- Manage content via a CMS
+- Get live previews while editing
+- Use a green hosting provider
+
+This translates to the following technical requirements:
+
+- Build the site using React (or rather Preact) components from the ground up.
+- Render the components as static HTML during build time.
+- Only ship the JavaScript code that is needed for the interactive parts.
+- Generate a static SPA for preview purposes next to the static pages.
+- Don't require a server (or serverless functions / workers) for serving the site.
+
+We looked closely at the [various existing approaches](/docs/why/capri-vs-x), but
+found none that met all of the above requirements without any hacks or workarounds.
+This is why we started Capri.

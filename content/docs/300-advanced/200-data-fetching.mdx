@@ -1,0 +1,35 @@
+---
+title: Data fetching
+---
+
+Unlike other frameworks, Capri is not involved in how you fetch your data.
+That means that every component can fetch its own data as needed.
+
+Popular options are [TanStack Query](https://tanstack.com/query/), Vercel's
+[SWR](https://swr.vercel.app/) or
+[React Router's data API](https://beta.reactrouter.com/en/dev/getting-started/data).
+
+## Async rendering
+
+For this to work you need to make sure that the `render` function in your
+[server entry file](/docs/project-structure/server-entry) supports async rendering.
+
+SolidJS [supports this](https://www.solidjs.com/docs/latest#rendertostringasync) by default:
+
+```ts
+import { renderToStringAsync } from "solid-js/web";
+```
+
+For Preact you can use the [prerender](https://github.com/preactjs/wmr/tree/main/packages/preact-iso#prerenderjs)
+from `preact-iso`:
+
+```ts
+import { prerender } from "preact-iso";
+```
+
+Whereas for React you can use the [react-render-to-string](https://www.npmjs.com/package/react-render-to-string)
+package:
+
+```ts
+import renderToString from "react-render-to-string";
+```

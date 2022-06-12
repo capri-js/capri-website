@@ -1,5 +1,8 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import highlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeExternalLinks from "rehype-external-links";
 
 export const Doc = defineDocumentType(() => ({
   name: "Doc",
@@ -39,5 +42,12 @@ export default makeSource({
   contentDirPath: "content",
   documentTypes: [Doc],
   disableImportAliasWarning: true,
-  mdx: { rehypePlugins: [highlight] },
+  mdx: {
+    rehypePlugins: [
+      highlight,
+      rehypeSlug,
+      rehypeAutolinkHeadings,
+      rehypeExternalLinks,
+    ],
+  },
 });

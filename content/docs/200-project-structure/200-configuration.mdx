@@ -1,0 +1,81 @@
+---
+title: Configuration
+---
+
+Capri is based on Vite and doesn't try to hide it. Instead of introducing another level of abstraction,
+possibly with its own configuration file, we decided to keep things simple. Therefore, Capri is configured via the
+`vite.config.ts` file:
+
+```ts
+import { defineConfig } from "vite";
+
+// Vite plugin for the framework you are using:
+import react from "@vitejs/plugin-react";
+
+// Capri adapter for your framework:
+import capri from "@capri-js/react";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    capri({
+      // options
+    }),
+  ],
+});
+```
+
+Currently there are three framework adapters to choose from:
+
+- React: [@capri-js/react](https://www.npmjs.com/package/@capri-js/react)
+- Preact: [@capri-js/preact](https://www.npmjs.com/package/@capri-js/preact)
+- SolidJS: [@capri-js/solid](https://www.npmjs.com/package/@capri-js/solid)
+
+## Options
+
+### `createIndexFiles`
+
+Whether Capri should generate pages as `<page>.html` or `<page>/index.html`. The default is `true`.
+
+### `spa`
+
+The pathname, relative to the `dist` dir, where Capri should render the whole site as
+single page app. Use this setting if you want live previews for your CMS. Can be either a `string`
+or `false` (default).
+
+The actual location depends on the `createIndexFiles` option:
+
+```ts
+{
+  createIndexFiles: true,
+  spa: "/preview",
+}
+// -> dist/preview/index.html
+```
+
+Whereas...
+
+```ts
+{
+  createIndexFiles: false,
+  spa: "/preview",
+}
+// -> dist/preview.html
+```
+
+### `prerender`
+
+Tells Capri which files should be prerendered. Can either be a `string` or
+`string[]` or an async function that returns an array of strings.
+The default is `/`.
+
+### `followLinks`
+
+Whether Capri should recursively look for local links in the rendered result
+and render them too. Can either be a `boolean` or a filter function:
+
+```ts
+{
+  followLinks: (pathname: string) => !pathname.includes("dynamic");
+}
+```
