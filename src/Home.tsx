@@ -20,7 +20,7 @@ export function Home() {
         <p>Capri is a static site generator with a unique set of features:</p>
         <Grid>
           <GridItem emoji="🧩" title="Component-based">
-            Capri sites are built with components. Use a framwork like React,
+            Capri sites are built with components. Use a framework like React,
             Preact or SolidJS rather than a templating language.
           </GridItem>
           <GridItem emoji="🏝" title="Island architecture">
