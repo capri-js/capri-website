@@ -5,20 +5,20 @@ title: Partial hydration
 One of Capri's core features is that it supports partial hydration, also known
 as [islands architecture](https://jasonformat.com/islands-architecture/). This
 means that Capri sites will by default ship zero KB of JavaScript to the
-browser. If you need some interactivity on your pages you can selectively
+browser. If you need some interactivity on your pages, you can selectively
 _hydrate_ these components.
 
 ## Creating islands
 
 Create a regular React/Preact/SolidJS component and name it `*.island.(tsx|jsx)`.
 
-Import the `island` function from `virtual:island` to create a higher order component like this:
+Import the `island` function to create a higher order component like this:
 
 ```tsx
 // Counter.island.tsx
 
 import { useState } from "preact/hooks";
-import { island } from "virtual:island";
+import { island } from "@capri-js/preact";
 
 function Counter() {
   const [counter, setCounter] = useState(0);
@@ -56,7 +56,7 @@ export function App() {
         Here is a simple counter: <CounterIsland />
       </div>
       <div>
-        And here is another one, independent from the one above:
+        And here is another one, independent of the one above:
         <CounterIsland start={100} />
       </div>
     </main>
@@ -64,8 +64,36 @@ export function App() {
 }
 ```
 
+## Static child content
+
+Child components that are passed from a parent on to an island are only rendered on the
+server. Upon hydration, the children are replaced by a single component that returns the
+static HTML as it was initially rendered. Therefore, the `children` property won't be included
+in the island marker script, where all other initial props are serialized.
+
+This allows you to use Capri islands for things like navigation menus or accordion components
+that are hard to implement with other partial hydration solutions.
+
+## Island options
+
+### `media: string`
+
+Only hydrate the component when the given media query matches. In the following example
+the hydration of the component will be deferred until the viewport width gets below 700 pixels:
+
+```ts
+// BurgerMenu.island.tsx
+
+function BurgerMenu() {
+  // ...
+}
+
+export const BurgerMenuIsland = island(BurgerMenu, {
+  media: "(max-width: 700px)",
+});
+```
+
 <Note title="Stay tuned">
-  We are planing to add more fine grained control about when the hydration
-  happens. For example only when the island enters the viewport or when a
-  certain media query matches.
+  We are planing to add more options, for example to only hydrate islands that
+  are within the viewport.
 </Note>

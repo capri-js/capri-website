@@ -2,8 +2,9 @@
 title: Internals
 ---
 
-Key to the partial hydration is the `island` function, which is provided through a virtual module.
-Depending on whether the build is performed in client or server mode, a different implementation is returned.
+Key to the partial hydration is the `island` function, which is provided by the various framework
+adapter packages. Depending on whether the build is performed in client or server mode, a different
+implementation is returned.
 
 For client builds, the island function is a no-op, it returns the passed-in component verbatim.
 
@@ -14,14 +15,14 @@ The original component followed by a script tag.
 
 The island marker script is of type `application/json` and contains the component's initial props,
 serialized as JSON. It also has a `data-island` attribute that identifies the component.
-The value is the moduleId of the component's rollup chunk.
+The value is the moduleId of the component's rollup chunk, followed by the name of the export.
 
 ```html
 <div data-island-root style="display: contents;">
   <div class="counter"><button>-</button>100<button>+</button></div>
   <script
     type="application/json"
-    data-island="/src/Counter.island.tsx"
+    data-island="/src/Counter.island.tsx::default"
     data-key="Counter"
   >
     {
@@ -31,7 +32,7 @@ The value is the moduleId of the component's rollup chunk.
 </div>
 ```
 
-In order to obtain this ID, the island module calls `import.meta.globEager()` to find all components that match
+In order to obtain this ID, the island function calls `import.meta.globEager()` to find all components that match
 the configured glob pattern. It then compares the passed component to all found island
 components (using a `===` check).
 
@@ -47,71 +48,3 @@ Currently, Capri ships with three framework adapters. Take a look at the sources
 - React: [@capri-js/react](https://github.com/capri-js/capri/tree/main/packages/react)
 - Preact: [@capri-js/preact](https://github.com/capri-js/capri/tree/main/packages/preact)
 - SolidJS: [@capri-js/solid](https://github.com/capri-js/capri/tree/main/packages/solid)
-
-This is what the React implemenation looks like:
-
-```ts
-// @capri-js/react/src/index.ts
-
-import capri, { CapriAdapterPluginOptions } from "@capri-js/vite-plugin";
-
-export default function (opts: CapriAdapterPluginOptions = {}) {
-  return capri({
-    ...opts,
-    hydrate: "@capri-js/react/lib/hydrate.js",
-    renderMarkerFragment: "@capri-js/react/lib/renderMarkerFragment.js",
-  });
-}
-```
-
-As you can see, the plugin is just a thin wrapper around `@capri-js/vite-plugin` that
-injects two options: `hydrate` and `renderMarkerFragment`.
-
-Lets take a look at `hydrate` first:
-
-```ts
-// @capri-js/react/src/hydrate.ts
-
-import { ComponentType, createElement } from "react";
-import { hydrateRoot } from "react-dom/client";
-
-export function hydrate(
-  component: ComponentType,
-  props: object,
-  element: Element
-) {
-  return hydrateRoot(element.parentElement!, createElement(component, props));
-}
-```
-
-All hydration module must export a `hydrate` function with the signature above that
-invokes the framework specific hydration code.
-
-Finally, we need to implement the code that renders the island, followed by the
-[marker script](#island-marker-script):
-
-```ts
-// @capri-js/react/src/renderMarkerFragement.ts
-
-import { ComponentType, createElement } from "react";
-
-export function renderMarkerFragment(
-  Component: ComponentType,
-  props: object,
-  scriptProps: object,
-  scriptContent: string
-) {
-  // In order to hydrate a React component it must be the first child element.
-  // To guarantee this, we wrap it in an extra div and set it to
-  // `display: contents` in order to not affect the styling.
-  return createElement(
-    "div",
-    { "data-island-root": true, style: { display: "contents" } },
-    createElement(Component, props),
-    createElement("script", {
-      ...scriptProps,
-      dangerouslySetInnerHTML: { __html: scriptContent },
-    })
-  );
-}
-```
