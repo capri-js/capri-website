@@ -17,7 +17,7 @@ export function Home() {
       />
       <Section>
         <h2>About Capri</h2>
-        <p>Capri is a static stite generator with a unique set of features:</p>
+        <p>Capri is a static site generator with a unique set of features:</p>
         <Grid>
           <GridItem emoji="🧩" title="Component-based">
             Capri sites are built with components. Use a framwork like React,
