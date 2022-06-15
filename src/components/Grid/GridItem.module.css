@@ -1,21 +1,20 @@
 .root {
-  display: flex;
-  flex-direction: column;
+  text-align: center;
+  color: #18191f;
 }
 .icon {
-  position: absolute;
-  left: -1.5em;
-  top: 0;
-  filter: contrast(0) sepia(1) hue-rotate(18deg) saturate(2) brightness(1.5);
+  color: var(--secondary);
 }
 .title {
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 500;
   line-height: 1.25;
-  position: relative;
-  margin-bottom: 0.5em;
+  margin: 0.3em 0;
 }
 .text {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 300;
   line-height: 1.4;
-  max-width: 100%;
+  max-width: 35ch;
+  margin: 0 auto;
 }

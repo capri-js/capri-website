@@ -4,7 +4,7 @@
   gap: 4ch;
   & > * {
     flex-grow: 1;
-    flex-basis: calc((30rem - 100%) * 999);
+    flex-basis: calc((36rem - 100%) * 999);
   }
   & > :nth-last-child(n + 4),
   & > :nth-last-child(n + 4) ~ * {

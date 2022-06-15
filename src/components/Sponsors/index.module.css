@@ -1,0 +1,15 @@
+.root {
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6em;
+  & img {
+    display: block;
+  }
+}
+.sponsoredBy {
+  font-weight: 700;
+  font-size: 1.2rem;
+}

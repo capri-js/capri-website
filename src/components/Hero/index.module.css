@@ -1,26 +1,20 @@
 .root {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 6rem;
-  padding-bottom: 6rem;
-}
-
-.heading {
-  font-size: 3em;
-  font-weight: 700;
-  font-variation-settings: "wdth" 85;
-  line-height: 0.85;
-  margin: 0 0 0.25em 0;
+  padding-top: min(15vw, 6rem);
+  padding-bottom: min(10vw, 3rem);
+  text-align: center;
+  margin: 0;
   color: var(--darkest);
+  & img {
+    display: block;
+    width: min(50vw, 500px);
+    margin: 1rem auto;
+    height: auto;
+  }
 }
 
 .text {
-  font-size: 1.3em;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-size: 1.75em;
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-weight: 200;
   line-height: 1;
-  margin: 0;
-  color: var(--neutral);
 }

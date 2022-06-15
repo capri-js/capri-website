@@ -1,0 +1,20 @@
+.root {
+  background: #e0f8f5;
+  position: relative;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 596 144' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M596 142c-52-64-106-32-106-32s-3-35-37-55c-66-39-111 17-111 17-19-54-61-74-97-72-97 7-117 73-121 112L1 143h240v-1h355Z' fill='%23fff8' /%3E%3C/svg%3E");
+  left: -100px;
+  top: min(38vw, 300px);
+  width: 30vw;
+  height: 7.2vw;
+  & + & {
+    top: 50px;
+    left: auto;
+    right: -100px;
+    transform: rotateY(180deg);
+  }
+}

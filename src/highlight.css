@@ -1,126 +1,138 @@
-/*!
-   Theme: Agate
-   Author: (c) Taufik Nurrohman <hi@taufik-nurrohman.com>
-   Maintainer: @taufik-nurrohman
-   Updated: 2021-04-24
-*/
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
 
 .hljs {
-  background: #001f03;
-  color: #fff;
+  color: #abb2bf;
+  background: #282c34;
 }
 
-.hljs-doctag,
-.hljs-meta-keyword,
+.hljs::selection,
+.hljs ::selection {
+  background-color: #3e4451;
+  color: #abb2bf;
+}
+
+/* purposely do not highlight these things */
+.hljs-formula,
+.hljs-params,
+.hljs-property {
+}
+
+/* base03 - #545862 -  Comments, Invisibles, Line Highlighting */
+.hljs-comment {
+  color: #545862;
+}
+
+/* base04 - #565c64 -  Dark Foreground (Used for status bars) */
+.hljs-tag {
+  color: #565c64;
+}
+
+/* base05 - #abb2bf -  Default Foreground, Caret, Delimiters, Operators */
+.hljs-subst,
+.hljs-punctuation,
+.hljs-operator {
+  color: #abb2bf;
+}
+
+.hljs-operator {
+  opacity: 0.7;
+}
+
+/* base08 - Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted */
+.hljs-bullet,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-selector-tag,
 .hljs-name,
+.hljs-deletion {
+  color: #dd6e42;
+}
+
+/* base09 - Integers, Boolean, Constants, XML Attributes, Markup Link Url */
+.hljs-symbol,
+.hljs-number,
+.hljs-link,
+.hljs-attr,
+.hljs-variable.constant_,
+.hljs-literal {
+  color: #fff6c4;
+}
+
+/* base0A - Classes, Markup Bold, Search Text Background */
+.hljs-title,
+.hljs-class .hljs-title,
+.hljs-title.class_ {
+  color: #ed9937;
+}
+
 .hljs-strong {
   font-weight: bold;
+  color: #ed9937;
 }
 
+/* base0B - Strings, Inherited Class, Markup Code, Diff Inserted */
 .hljs-code,
+.hljs-addition,
+.hljs-title.class_.inherited__,
+.hljs-string {
+  color: #83c5ad;
+}
+
+/* base0C - Support, Regular Expressions, Escape Characters, Markup Quotes */
+.hljs-built_in,
+.hljs-doctag, /* guessing */
+.hljs-quote,
+.hljs-keyword.hljs-atrule,
+.hljs-regexp {
+  color: #56b6c2;
+}
+
+/* base0D - Functions, Methods, Attribute IDs, Headings */
+.hljs-function .hljs-title,
+.hljs-attribute,
+.ruby .hljs-property,
+.hljs-title.function_,
+.hljs-section {
+  color: #fff6c4;
+}
+
+/* base0E - Keywords, Storage, Selector, Markup Italic, Diff Changed */
+.hljs-type,
+/* .hljs-selector-id, */
+/* .hljs-selector-class, */
+/* .hljs-selector-attr, */
+/* .hljs-selector-pseudo, */
+.hljs-template-tag,
+.diff .hljs-meta,
+.hljs-keyword {
+  color: #c78ed8;
+}
 .hljs-emphasis {
+  color: #c78ed8;
   font-style: italic;
 }
 
-.hljs-section,
-.hljs-tag {
-  color: #62c8f3;
+/* base0F - Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?> */
+.hljs-meta,
+/*
+  prevent top level .keyword and .string scopes
+  from leaking into meta by accident
+*/
+.hljs-meta .hljs-keyword,
+.hljs-meta .hljs-string {
+  color: #dd6e42;
 }
 
-.hljs-selector-class,
-.hljs-selector-id,
-.hljs-template-variable,
-.hljs-variable {
-  color: #ade5fc;
-}
-
-.hljs-meta-string,
-.hljs-string {
-  color: #9ada8b;
-}
-
-.hljs-attr,
-.hljs-quote,
-.hljs-selector-attr {
-  color: #15992b;
-}
-
-.hljs-tag .hljs-attr {
-  color: inherit;
-}
-
-.hljs-attribute,
-.hljs-title,
-.hljs-type {
-  color: #ffe670;
-}
-
-.hljs-number,
-.hljs-symbol {
-  color: #d36363;
-}
-
-.hljs-bullet,
-.hljs-template-tag {
-  color: #b8d8a2;
-}
-
-.hljs-built_in,
-.hljs-keyword,
-.hljs-literal,
-.hljs-selector-tag {
-  color: #ffb570;
-}
-
-.hljs-code,
-.hljs-comment,
-.hljs-formula {
-  color: #888;
-}
-
-.hljs-link,
-.hljs-selector-pseudo,
-.hljs-regexp {
-  color: #c6b4f0;
-}
-
-.hljs-meta {
-  color: #fc9b9b;
-}
-
-.hljs-deletion {
-  background: #fc9b9b;
-  color: #333;
-}
-
-.hljs-addition {
-  background: #a2fca2;
-  color: #333;
-}
-
-/* Purposely ignored */
-.hljs-operator,
-.hljs-params,
-.hljs-property,
-.hljs-punctuation {
-}
-
-.hljs-subst {
-  color: #fff;
-}
-
-/* This applies only if HTML auto-merging plugin is enabled by user (#2889) */
-.hljs a {
-  color: inherit;
-}
-
-.hljs a:focus,
-.hljs a:hover {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.hljs mark {
-  background: #555;
-  color: inherit;
+.hljs-meta .hljs-keyword,
+/* for v10 compatible themes */
+.hljs-meta-keyword {
+  font-weight: bold;
 }
