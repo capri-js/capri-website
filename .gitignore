@@ -1,4 +1,6 @@
 .DS_Store
+yalc.lock
+.yalc/
 dist/
 node_modules/
 .contentlayer/
