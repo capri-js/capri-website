@@ -6,7 +6,7 @@
   font-size: 0.9rem;
   line-height: 1.4;
   border-radius: 0.5rem;
-  border: 1px solid var(--devider);
+  border: 1px solid var(--divider);
   background: var(--light);
   padding: 1.2rem;
   & > * {

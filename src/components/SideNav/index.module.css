@@ -2,7 +2,7 @@
   flex: 0 0 300px;
   display: flex;
   position: relative;
-  border-right: 1px solid var(--devider);
+  border-right: 1px solid var(--divider);
   &[data-menu="open"] {
     transition: transform 0.2s ease-out;
     transform: translateX(0);
