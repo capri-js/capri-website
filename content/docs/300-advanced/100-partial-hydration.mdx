@@ -71,8 +71,59 @@ server. Upon hydration, the children are replaced by a single component that ret
 static HTML as it was initially rendered. Therefore, the `children` property won't be included
 in the island marker script, where all other initial props are serialized.
 
-This allows you to use Capri islands for things like navigation menus or accordion components
-that are hard to implement with other partial hydration solutions.
+## Lagoons
+
+Islands can again have static child components. We call them lagoons. In order to create a
+lagoon, you have to provide a factory function that returns a dynamic import. This way
+the code won't show up in the client bundle.
+
+```ts
+// Menu.island.tsx
+
+import { island, lagoon } from "@capri-js/react";
+import { useState } from "react";
+
+const MenuItems = lagoon(() => import("./MenuItems.jsx"));
+
+function Menu() {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div data-expanded={expanded}>
+      <button onClick={() => setExpanded(!expanded)}>Menu</button>
+      <MenuItems />
+    </div>
+  );
+}
+
+export const MenuIsland = island(Menu);
+```
+
+And this is what the MenuItems component looks like:
+
+```ts
+// MenuItems.tsx
+
+export default function MenuItems() {
+  console.log("Rendering MenuItems. This will only happen during build.");
+  return (
+    <ul>
+      <li>
+        <a href="/one">Item one</a>
+      </li>
+      <li>
+        <a href="/two">Item two</a>
+      </li>
+      <li>
+        <a href="/three">Item three</a>
+      </li>
+    </ul>
+  );
+}
+```
+
+<Note>
+  Since we use a dynamic import, `MenuItems` must be the default export.
+</Note>
 
 ## Island options
 

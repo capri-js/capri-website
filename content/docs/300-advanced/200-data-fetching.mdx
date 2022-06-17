@@ -14,22 +14,15 @@ Popular options are [TanStack Query](https://tanstack.com/query/), Vercel's
 For this to work you need to make sure that the `render` function in your
 [server entry file](/docs/project-structure/server-entry) supports async rendering.
 
-SolidJS [supports this](https://www.solidjs.com/docs/latest#rendertostringasync) by default:
+For convenience, all Capri framework adapters export a `renderToString` function:
 
 ```ts
-import { renderToStringAsync } from "solid-js/web";
+import { renderToString } from "@capri-js/react";
+import { renderToString } from "@capri-js/preact";
+import { renderToString } from "@capri-js/solid";
 ```
 
-For Preact you can use the [prerender](https://github.com/preactjs/wmr/tree/main/packages/preact-iso#prerenderjs)
-from `preact-iso`:
-
-```ts
-import { prerender } from "preact-iso";
-```
-
-Whereas for React you can use the [react-render-to-string](https://www.npmjs.com/package/react-render-to-string)
-package:
-
-```ts
-import renderToString from "react-render-to-string";
-```
+For SolidJS this is a re-export of [renderToStringAsync](https://www.solidjs.com/docs/latest#rendertostringasync) from `solid-js/web`.
+For Preact this is a re-export of [prerender](https://github.com/preactjs/wmr/tree/main/packages/preact-iso#prerenderjs)
+from `preact-iso`.
+And for React, this is a re-export of [react-render-to-string](https://www.npmjs.com/package/react-render-to-string).

@@ -19,10 +19,8 @@ You can find examples for different frameworks in the
 This is what a typical render function for React looks like:
 
 ```ts
-import type { RenderFunction } from "@capri-js/react";
-
 import { StrictMode } from "react";
-import renderToString from "react-render-to-string";
+import { RenderFunction, renderToString } from "@capri-js/react";
 import { StaticRouter } from "react-router-dom/server.js";
 
 import { App } from "./App";
@@ -41,9 +39,8 @@ export const render: RenderFunction = async (url: string) => {
 ```
 
 <Note>
-  This example uses the
-  [react-render-to-string](https://www.npmjs.com/package/react-render-to-string)
-  package instead of the synchronous
+  This example uses Capri's async `renderToString` function instead of the
+  synchronous
   [ReactDOMServer.renderToStaticMarkup](https://reactjs.org/docs/react-dom-server.html#rendertostaticmarkup)
-  to support data loading via suspense.
+  to support [data fetching](/docs/advanced/data-fetching) via suspense.
 </Note>
