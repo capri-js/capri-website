@@ -13,12 +13,35 @@ npm install --save-dev @capri-js/react` # or preact or solid
 ### 2. Add the plugin to your `vite.config.ts` file:
 
 ```ts
-import capri from "@capri-js/react";
+import capri from "@capri-js/react/vite-plugin";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react(), capri()],
+});
+```
+
+<Note>
+  Capri is an ESM-only module, so you have to set `"type": "module"` to your
+  `package.json`.
+</Note>
+
+When you need to use dependencies in your project that don't work well in a
+native ESM context, you can set up your project as CommonJS and use a dynamic
+import instead:
+
+```ts
+// vite.config.ts for a CommonJS setup
+
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+export default defineConfig(async () => {
+  const { default: capri } = await import("@capri-js/react/vite-plugin");
+  return {
+    plugins: [react(), capri()],
+  };
 });
 ```
 
@@ -35,4 +58,4 @@ export default defineConfig({
 
 ### 4. Add a server entry scripts
 
-Finally you have to provide a [server entry script](/docs/project-structure/server-entry) to tell Capri how to render your app as html.
+Finally, you have to provide a [server entry script](/docs/project-structure/server-entry) to tell Capri how to render your app as HTML.

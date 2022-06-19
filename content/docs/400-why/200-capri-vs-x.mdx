@@ -13,14 +13,17 @@ It even lets you mix components from various frameworks and supports some advanc
 like using intersection observers or media queries.
 
 Unfortunately, components can only be marked as islands from within .astro templates.
-Therefore all static parts of your site that are ancestors of an island have to be written as
+Therefore, all static parts of your site that are ancestors of an island have to be written as
 Astro components, too.
 
-While Astro component are great (think of them as JSX files with JavaScript frontmatter) they feel
-somehow alien in a React environment.
+Capri does not only allow you to define islands right inside your regular framework components, it also
+supports lagoons, which in turn let you define static components inside your islands.
 
-The main idea behind Capri is to introduce as few new concepts as possible. This is also why Capri
-does not ship with a built-in router, but lets you choose whatever routing solution you want.
+While Astro component in general are great (think of them as JSX files with JavaScript frontmatter)
+they feel somehow alien in a React environment. And since Astro comes with quite a lot of built-in
+features, this also means that there are quite a few things you have to learn. Capri's main idea on the
+other hand is to introduce as few new concepts as possible. This is also why Capri does not ship with a
+built-in router or enforces a particular data-fetching pattern.
 
 ## Next.js
 
