@@ -38,9 +38,16 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig(async () => {
+  // Use a dynamic import to load the ES module:
   const { default: capri } = await import("@capri-js/react/vite-plugin");
   return {
-    plugins: [react(), capri()],
+    plugins: [
+      react(),
+      capri({
+        // Output the SSR bundle as CommonJS
+        ssrFormat: "commonjs",
+      }),
+    ],
   };
 });
 ```

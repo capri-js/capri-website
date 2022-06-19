@@ -1,0 +1,84 @@
+---
+title: TinaCMS
+---
+
+[TinaCMS](https://tina.io/) is an open source, Git-backed CMS that adds a custom visual editing
+experience to a site.
+
+<Video title="Editing with TinaCMS" videoId="721982027" />
+
+While Tina is originally made for Next.js sites, it can also be used as content source for Capri.
+
+When used with Capri, you get a completely static site that does not need a Node server and can be deployed
+to any static hosting service, including S3, GitHub Pages, surge or Firebase Hosting.
+
+The cool thing is that the resulting website will ship **zero KB of JavaScript** to the browser.
+Still, under `/admin` you get the full Tina editing experience as single page app!
+
+The easiest way to get started is by using the 1-click starter. First go to [app.tina.io](https://app.tina.io/)
+and sign in with your GitHub account. Then click on the deploy button below:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-image=https%3A%2F%2Fapp.tina.io%2Fimages%2Ftina-cloud-starter.png&demo-title=Capri+with+Tina+Starter&demo-url=https%3A%2F%2Fgithub.com%2Ftinacms%2Ftina-cloud-starter%2Ftree%2Fmain&repository-name=tinacms-cloud-capri&project-name=tinacms-cloud-capri&redirect-url=https%3A%2F%2Fapp.tina.io%2Fprojects%2Fstarter&demo-description=A+Capri+site+powered+by+Tina.&repository-url=https%3A%2F%2Fgithub.com%2Fcapri-js%2Ftinacms-cloud-capri%2Ftree%2Fmain&integration-ids=oac_16ZYZ0RVRarpKj9Ninm5WkbR)
+
+Here is a screencast of what will happen when you click the button:
+
+<Video videoId="721979817" title="1-click starter" />
+
+The [source code for this demo](https://github.com/capri-js/tinacms-cloud-capri) is on GitHub.
+
+There is also a [stripped down version](https://github.com/capri-js/tinacms-barebones-capri) that contains
+only the bar minimum code.
+
+## Things to note
+
+The official TinaCMS starter templates are all based on Next.js. In order to make them work with Capri,
+a few things need to be changed.
+
+### Routing
+
+In contrast to Next.js, Capri has no built-in routing solution. Since the Tina admin UI uses
+[React Router](https://reactrouter.com/) it makes sense to use it for the website too.
+
+### Data fetching
+
+In Next.js data is fetched externally and passed to the pages as props. With Capri, every component can fetch
+its own data. Capri uses suspense to wait for the asynchronously loaded data so that it can be included in
+the rendered result. You can use any data fetching library with suspense support. For the Tina starters we
+chose [SWR](https://swr.vercel.app/).
+
+### CommonJS vs. ESM
+
+By default, Capri sites use `"type": "module"` in their `package.json`. As Tina does not work well in a
+native ESM environment, the easiest solution is to use CommonJS for the whole project.
+
+Some more trickery is needed to get everything working with Vite. One of the dependencies uses moment.js
+which is [not very ESM-friendly](https://github.com/vitejs/vite/issues/1724#issuecomment-767619642).
+Luckily, we can fix this by setting up an alias.
+Another dependency tries to read `process.platform` which is not exposed by Vite, so we have to define
+it, too. The final `vite.config.ts` looks like this:
+
+```ts
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+export default defineConfig(async () => {
+  // Since Capri is ESM-only we have to use usa a dynamic import:
+  const { default: capri } = await import("@capri-js/react/vite-plugin");
+  return {
+    plugins: [
+      react(),
+      capri({
+        ssrFormat: "commonjs", // Generate the SSR bundle as CommonJS
+        spa: "/admin",
+      }),
+    ],
+    // Fix moment.js by explicitly importing the CJS version
+    resolve: {
+      alias: [{ find: "moment", replacement: "moment/moment.js" }],
+    },
+    define: {
+      "process.platform": "'browser'",
+    },
+  };
+});
+```

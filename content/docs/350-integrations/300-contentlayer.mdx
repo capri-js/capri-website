@@ -1,0 +1,88 @@
+---
+title: Contentlayer
+---
+
+[Contentlayer](https://www.contentlayer.dev/) is a content SDK that validates and transforms your
+content into type-safe JSON data you can easily import into your application.
+
+The [capri.build](https://capri.build) website uses Contentlayer to read local MDX files.
+Take a look at the [source code on GitHub](https://github.com/capri-js/capri-website) to dive into
+the details.
+
+## Dev & build scripts
+
+In `package.json` the contentlayer CLI is used to transform the MDX files:
+
+```json
+"scripts": {
+  "dev": "contentlayer dev & vite dev",
+  "build": "contentlayer build && vite build && vite build --ssr",
+  "serve": "vite preview"
+}
+```
+
+## Page component
+
+The page component that renders the document you are currently viewing looks
+similar to this:
+
+```ts
+import { useDoc } from "./useDoc";
+import { useMdx } from "./useMdx";
+import { Card } from "./components/Card";
+import { Note } from "./components/Note";
+import { Video } from "./components/Video";
+
+const mdxComponents = {
+  Card,
+  Note,
+  Video,
+};
+
+type Props = {
+  url?: string; // injected by preact-router
+};
+
+export function Doc({ url }: Props) {
+  const doc = useDoc(url);
+  const Mdx = useMdx(doc.body.code);
+  return (
+    <div>
+      <h1>{doc.title}</h1>
+      <Mdx components={mdxComponents} />
+    </div>
+  );
+}
+```
+
+## Data loading
+
+The content is loaded via the `useDoc()` hook. This is what it looks like:
+
+```ts
+import { allDocs } from "../.contentlayer/generated";
+
+export function useDoc(url?: string) {
+  const doc = allDocs.find((doc) => doc.url === url);
+  if (!doc) throw new Error(`No doc found for ${url}`);
+  return doc;
+}
+```
+
+## Rendering the MDX
+
+Finally the `useMdx()` hook is used to render the content. It looks like this:
+
+```ts
+import { useMemo } from "preact/hooks";
+import * as _jsx_runtime from "preact/jsx-runtime";
+
+export function useMdx(code: string) {
+  return useMemo(() => {
+    const scope = { _jsx_runtime };
+    const fn = new Function(...Object.keys(scope), code);
+    const { default: Component } = fn(...Object.values(scope));
+    return Component;
+  }, [code]);
+}
+```
