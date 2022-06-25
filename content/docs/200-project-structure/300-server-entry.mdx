@@ -14,13 +14,12 @@ markup to be injected into the index.html file.
 The markup is returned as object with CSS selectors as keys. This makes it possible to inject
 different chunks of HTML into different locations of the template, for example `head` and `#root`.
 
-You can find examples for different frameworks in the
-[GitHub repo](https://github.com/capri-js/capri/tree/main/examples).
-This is what a typical render function for React looks like:
+You can find examples in the [UI frameworks](/docs/frameworks) docs. This is what a typical render
+function for React looks like:
 
 ```ts
 import { StrictMode } from "react";
-import { RenderFunction, renderToString } from "@capri-js/react";
+import { RenderFunction, renderToString } from "@capri-js/react/server";
 import { StaticRouter } from "react-router-dom/server.js";
 
 import { App } from "./App";

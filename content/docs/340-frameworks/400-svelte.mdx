@@ -1,0 +1,190 @@
+---
+title: Svelte
+---
+
+## Create a new site
+
+```bash
+npm init capri my-capri-site -- -e svelte
+```
+
+This will download and install [capri-js/capri/examples/svelte](https://github.com/capri-js/capri/tree/main/examples/svelte).
+
+You can view a [deployed version](https://capri-js.github.io/capri/svelte/) of the demo on GitHub pages,
+including the [preview SPA](https://capri-js.github.io/capri/svelte/preview/).
+
+## Entry files
+
+The client entry file is a regular Svelte single page app:
+
+```tsx
+// src/main.tsx
+
+import { ClientApp, Router } from "svelte-pilot";
+
+import router from "./router.js";
+
+new ClientApp({
+  target: document.body,
+  props: {
+    router,
+  },
+});
+```
+
+In this example we use [svelte-pilot](https://www.npmjs.com/package/svelte-pilot) as it supports
+SSR and async data loading. This is what `router.tsx` looks like:
+
+```tsx
+// src/router.tsx
+
+import { Router } from "svelte-pilot";
+
+import * as About from "./About.svelte";
+import * as Home from "./Home.svelte";
+
+const routes = [
+  {
+    path: "/",
+    component: Home,
+  },
+  {
+    path: "/about",
+    component: About,
+  },
+];
+
+export default new Router({
+  routes,
+  base: import.meta.env.BASE_URL,
+  mode: import.meta.env.SSR ? "server" : "client",
+});
+```
+
+<Note title="base option">
+  If you deploy your site to `"/"` you can omit the `base` setting.
+</Note>
+
+<Note title="mode option">
+  If omitted, the `mode` options defaults to `typeof window === 'object' ?
+  'client' : 'server'`. We specify it here, as our E2E tests run in jsdom where
+  `window` is always defined.
+</Note>
+
+```tsx
+// src/main.server.tsx
+
+import { RenderFunction } from "@capri-js/svelte/server";
+import { Router, ServerApp } from "svelte-pilot";
+
+import router from "./router.js";
+
+export async function render(url: string) {
+  const matched = await router.handle(url);
+  if (!matched) throw new Error(`No matching route: ${url}`);
+  const { route, ssrState } = matched;
+  const { head, html } = ServerApp.render({ router, route, ssrState });
+  return {
+    head,
+    body: html,
+  };
+}
+```
+
+**Important:** When you use the Router's [base](https://www.npmjs.com/package/svelte-pilot#base)
+option, you have to provide an absolute URL with a protocol to `router.handle`.
+The actual host does not matter:
+
+```ts
+router.handle(`http://127.0.0.1${url}`);
+```
+
+## Islands
+
+you can define interactive islands by naming your components `*.island.svelte`:
+
+```tsx
+// src/Counter.island.svelte
+
+<script>
+  export let counter = 0;
+</script>
+
+<div>
+  <button on:click={() => counter--}>-</button>
+  <span>{counter}</span>
+  <button on:click={() => counter++}>+</button>
+</div>
+
+<style>
+  div {
+    display: flex;
+    gap: 0.5em;
+  }
+</style>
+
+```
+
+## Media queries
+
+You can export an `options` object in the module context to hydrate an island
+as soon as a media query matches. The following example will hydrate once the
+viewport width gets below 700px:
+
+```ts
+<script context="module">
+  export const options = {
+    media: "(max-width:700px)",
+  };
+</script>
+
+<script>
+  import { onMount } from "svelte";
+  let content = "Resize your browser below 700px to hydrate this island.";
+  onMount(() => {
+    content = "The island has been hydrated.";
+  });
+</script>
+
+<div>
+  {content}
+</div>
+
+```
+
+## Data fetching
+
+Svelte components can load data by exporting a `load` function in the
+module context.
+
+```ts
+// src/Profile.tsx
+
+<script context="module">
+  export async function load(props, route, ssrCtx) {
+    // The data must be returned as `ssrState`:
+    return {
+      ssrState: await fetchData(),
+    };
+  }
+
+  async function fetchData() {
+    const res = await fetch("https://api.example.com/user");
+    return res.json();
+  }
+</script>
+
+<script>
+  import { onMount } from "svelte";
+  export let ssrState;
+
+  // When running as SPA we have to fetch the data on mount:
+  onMount(async () => {
+    ssrState = await fetchData();
+  });
+</script>
+
+<div>
+  Hello {ssrState.name}!
+</div>
+```

@@ -1,0 +1,162 @@
+---
+title: Preact
+---
+
+## Create a new site
+
+```bash
+npm init capri my-capri-site -- -e preact
+```
+
+This will download and install [capri-js/capri/examples/preact](https://github.com/capri-js/capri/tree/main/examples/preact).
+
+You can view a [deployed version](https://capri-js.github.io/capri/preact/) of the demo on GitHub pages, including
+the [preview SPA](https://capri-js.github.io/capri/preact/preview/).
+
+## Entry files
+
+The client entry file is a regular Preact single page app. We render a `<PreviewBanner>`
+on top of the app, so users know that they are viewing the SPA version, which is usually
+the case when they are editing the site in a CMS.
+
+```tsx
+// src/main.tsx
+
+import { render } from "preact";
+import { Router } from "wouter-preact";
+
+import { App } from "./App";
+import { PreviewBanner } from "./Preview.jsx";
+
+render(
+  <Router>
+    <PreviewBanner />
+    <App />
+  </Router>,
+  document.body
+);
+```
+
+We use [wouter-preact](https://www.npmjs.com/package/wouter-preact) in this demo but you
+could as well use [preact-router](https://www.npmjs.com/package/preact-router) or even
+`react-router` together with `preact/compat`.
+
+On the server, we use `renderToString` and a
+[staticLocationHook](https://github.com/molefrog/wouter#is-there-any-support-for-server-side-rendering-ssr) hook:
+
+```tsx
+// src/main.server.tsx
+
+import { renderToString } from "@capri-js/preact/server";
+import { Router } from "wouter-preact";
+import staticLocationHook from "wouter-preact/static-location";
+
+import { App } from "./App";
+
+export async function render(url: string) {
+  const hook = staticLocationHook(url);
+  const res = await renderToString(
+    <Router hook={hook}>
+      <App />
+    </Router>
+  );
+
+  return {
+    "#app": res.html,
+  };
+}
+```
+
+## Islands
+
+You can define interactive islands by naming your components `*.island.tsx`:
+
+```tsx
+// src/Counter.island.tsx
+
+import { useState } from "preact/hooks";
+
+export default function Counter() {
+  const [counter, setCounter] = useState(0);
+  return (
+    <div>
+      <button onClick={() => setCounter((c) => c - 1)}>-</button>
+      <span>{counter}</span>
+      <button onClick={() => setCounter((c) => c + 1)}>+</button>
+    </div>
+  );
+}
+```
+
+## Media queries
+
+You can export an `options` object to hydrate an island as soon as a media query matches.
+The following example will hydrate once the viewport width gets below 700px:
+
+```ts
+import { useEffect, useState } from "preact/hooks";
+
+export const options = {
+  media: "(max-width:700px)",
+};
+
+export default function MediaQuery() {
+  const [content, setContent] = useState(
+    "Resize your browser below 700px to hydrate this island."
+  );
+  useEffect(() => {
+    setContent("The island has been hydrated.");
+  }, []);
+  return <div>{content}</div>;
+}
+```
+
+## Data fetching
+
+Components can throw a promise and will get re-rendered once the promise is resolved. You can use
+a library like [@urql/preact](https://www.npmjs.com/package/@urql/preact) that supports suspense
+or write your own custom hook:
+
+```ts
+// src/hooks/useFetch.ts
+
+const promises = new Map();
+const response = new Map();
+
+export function useFetch(url: string) {
+  const data = response.get(url);
+  if (data) return data;
+  let promise = promises.get(url);
+  if (!promise) {
+    promise = fetch(url).then((res) => res.json().then(data => response.set(url, data));
+    promises.set(url, promise);
+  }
+  throw promise;
+}
+```
+
+```ts
+// src/Profile.tsx
+import { useFetch } from "./hooks/useFetch.js";
+
+export function Profile() {
+  const user = useFetch("https://api.example.com/user");
+  return <div>Hello {user.name}!</div>;
+}
+```
+
+Add a `<Suspense>` boundary somewhere above in your component tree where you want to render a fallback
+while the data is loading. The fallback will only be shown in the preview SPA. When generating static
+pages, Capri will wait until all data is loaded.
+
+```ts
+// src/App.tsx
+
+export function App() {
+  return (
+    <Suspense fallback={<div>loading...</div>}>
+      <Profile />
+    </Suspense>
+  );
+}
+```

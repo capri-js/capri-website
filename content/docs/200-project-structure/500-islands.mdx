@@ -1,0 +1,66 @@
+---
+title: Islands
+---
+
+One of Capri's core features is that it supports partial hydration, also known
+as [islands architecture](https://jasonformat.com/islands-architecture/). This
+means that Capri sites will by default ship zero KB of JavaScript to the
+browser. If you need some interactivity on your pages, you can selectively
+_hydrate_ these components.
+
+All you have to do to create an island is to name your component `*.island.*`.
+Refer to the [docs](/docs/frameworks) for island examples in various UI frameworks.
+
+<Note title="Breaking Change">
+  Since Capri v4 islands must be the default export.
+</Note>
+
+## Islands containing static content
+
+You might sometimes want to create dynamic islands that in turn contain static content.
+In Capri you have to options to do this:
+
+1.) Pass the static content as children to your islands. When hydrated, Capri will replace
+the children by a component that renders the original HTML as it was generated on the server.
+
+2.) Create a lagoon. By naming a component `*.lagoon.*` you can mark it as static, and it will
+never be included in a client JavaScript bundle. Instead, it will be replaced by a component
+that renders the HTML as it was originally rendered by the server.
+
+## Island options
+
+You can customize the hydration behaviour by exporting an `options` object.
+
+### `media: string`
+
+Only hydrate the component when the given media query matches. In the following example
+the hydration of the component will be deferred until the viewport width gets below 700 pixels:
+
+```ts
+// BurgerMenu.island.tsx
+
+export const options = {
+  media: "(max-width: 700px)",
+};
+
+export default function BurgerMenu() {
+  // ...
+}
+```
+
+In a Svelte component, it would look like this:
+
+```html
+<script context="module">
+  export const options = {
+    media: "(max-width: 700px)",
+  };
+</script>
+
+<!-- ... -->
+```
+
+<Note title="Stay tuned">
+  We are planing to add more options, for example to only hydrate islands that
+  are within the viewport.
+</Note>

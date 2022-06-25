@@ -7,13 +7,19 @@ If you already have a working Vite single page app, you can render it as static 
 ### 1. Install the Capri Vite plugin for your framework of choice:
 
 ```bash
-npm install --save-dev @capri-js/react` # or preact or solid
+npm install --save-dev @capri-js/react`
+# OR:
+npm install --save-dev @capri-js/preact`
+# OR:
+npm install --save-dev @capri-js/svelte`
+# OR:
+npm install --save-dev @capri-js/solid`
 ```
 
 ### 2. Add the plugin to your `vite.config.ts` file:
 
 ```ts
-import capri from "@capri-js/react/vite-plugin";
+import capri from "@capri-js/..."; // pick a framework adapter from above
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
@@ -21,6 +27,8 @@ export default defineConfig({
   plugins: [react(), capri()],
 });
 ```
+
+The plugin can be configured using these [options](/docs/project-structure/configuration#options).
 
 <Note>
   Capri is an ESM-only module, so you have to set `"type": "module"` to your
@@ -39,7 +47,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig(async () => {
   // Use a dynamic import to load the ES module:
-  const { default: capri } = await import("@capri-js/react/vite-plugin");
+  const { default: capri } = await import("@capri-js/react");
   return {
     plugins: [
       react(),

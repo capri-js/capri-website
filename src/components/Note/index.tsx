@@ -14,7 +14,7 @@ export function Note({ title = "Note", children }: Props) {
         <LightBulbIcon />
         {title}
       </div>
-      {children}
+      <div>{children}</div>
     </div>
   );
 }

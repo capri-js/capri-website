@@ -1,0 +1,154 @@
+---
+title: SolidJS
+---
+
+## Create a new site
+
+```bash
+npm init capri my-capri-site -- -e solif
+```
+
+This will download and install [capri-js/capri/examples/solid](https://github.com/capri-js/capri/tree/main/examples/solid).
+
+You can view a [deployed version](https://capri-js.github.io/capri/solid/) of the demo on GitHub pages, including
+the [preview SPA](https://capri-js.github.io/capri/solid/preview/).
+
+## Entry files
+
+The client entry file is a regular SolidJS single page app. We render a `<PreviewBanner>`
+on top of the app, so users know that they are viewing the SPA version, which is usually
+the case when they are editing the site in a CMS.
+
+```tsx
+// src/main.tsx
+
+import { Router } from "solid-app-router";
+import { render } from "solid-js/web";
+
+import { App } from "./App";
+
+render(
+  () => (
+    <Router>
+      <App />
+    </Router>
+  ),
+  document.getElementById("app")!
+);
+```
+
+We use [solid-app-router](https://github.com/solidjs/solid-app-router) in this demo, the official routing
+solition for SolidJS.
+
+On the server, we use `renderToStringAsync` to get the HTML and `generateHydrationScript` to enable hydration.
+
+```tsx
+// src/main.server.tsx
+
+import { Router } from "solid-app-router";
+import { generateHydrationScript, renderToStringAsync } from "solid-js/web";
+
+import { App } from "./App";
+
+export async function render(url: string) {
+  const html = await renderToStringAsync(() => (
+    <Router url={url}>
+      <App />
+    </Router>
+  ));
+  return {
+    "#app": html,
+    body: generateHydrationScript(),
+  };
+}
+```
+
+<Note>
+  When the rendered page does not contain any islands, Capri will automatically
+  remove the hydration script from the document.
+</Note>
+
+## Islands
+
+You can define interactive islands by naming your components `*.island.tsx`:
+
+```tsx
+// src/Counter.island.tsx
+
+import { createSignal } from "solid-js";
+
+export default function Counter() {
+  const [counter, setCounter] = createSignal(start);
+  return (
+    <div>
+      <button onClick={() => setCounter((c) => c - 1)}>-</button>
+      <span>{counter()}</span>
+      <button onClick={() => setCounter((c) => c + 1)}>+</button>
+    </div>
+  );
+}
+```
+
+## Media queries
+
+You can export an `options` object to hydrate an island as soon as a media query matches.
+The following example will hydrate once the viewport width gets below 700px:
+
+```ts
+import { createSignal, onMount } from "solid-js";
+
+export const options = {
+  media: "(max-width:700px)",
+};
+
+export default function MediaQuery() {
+  const [content, setContent] = createSignal(
+    "Resize your browser below 700px to hydrate this island."
+  );
+  onMount(() => {
+    setContent("The island has been hydrated.");
+  });
+  return <div>{content}</div>;
+}
+```
+
+## Data fetching
+
+You can use Solid's [createResource](https://www.solidjs.com/docs/latest#createresource)
+to load data asynchronously:
+
+```ts
+// src/AsyncData.tsx
+
+import { createResource } from "solid-js";
+
+function fetchData() {
+  return new Promise<string>((resolve) =>
+    setTimeout(() => resolve("loaded!"), 500)
+  );
+}
+
+export function AsyncData() {
+  const [data] = createResource(fetchData);
+  return <div>{data}</div>;
+}
+```
+
+When you create a `<Suspense>` boundary around your async components,
+[renderToStringAsync](https://www.solidjs.com/docs/latest#rendertostringasync) will wait for
+them to resolve before returning the HTML:
+
+```ts
+// src/App.tsx
+
+import { Suspense } from "solid-js";
+import { AsyncData } from "./AsyncData.jsx";
+
+export function App() {
+  return (
+    <Suspense fallback={<div>loading...</div>}>
+      <AsyncData />
+    </Suspense>
+  );
+}
+```

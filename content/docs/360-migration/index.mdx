@@ -1,0 +1,106 @@
+---
+title: Migration
+---
+
+In version 4.x Svelte support was added to Capri. This required a few fundamental changes to Capri's
+internals and lead to some breaking changes.
+
+## Islands
+
+In previous versions, islands were implemented as higher order components, which were
+created via the `island` function. Since Capri 4.0, naming your components
+`.island.*` is all that it takes.
+
+### Old way
+
+```ts
+import { island } from "@capri-js/react";
+
+function MyComponent() {
+  // ....
+}
+export const MyComponentIsland = island(MyComponent);
+```
+
+### New since Capri 4
+
+The component must be the **default export** and the file must be named `*.island.*`.
+
+```ts
+export default function MyComponent() {
+  // ....
+}
+```
+
+## Island options
+
+In previous versions, island options could be passed to the `island` function as optional
+argument:
+
+```ts
+// Old way:
+
+export const MyComponentIsland = island(MyComponent, {
+  media: "(max-width: 700px)",
+});
+```
+
+### New since Capri 4
+
+The island options can be exported as `options`:
+
+```ts
+export const options = {
+  media: "(max-width: 700px)",
+});
+```
+
+## Lagoons
+
+In previous versions, lagoons were implemented as higher order components, which were
+created via the `lagoon` function. Since Capri 4.0, naming your components
+`.lagoon.*` is enough.
+
+### Old way
+
+```ts
+import { lagoon } from "@capri-js/react";
+
+const MyLagoon = lagoon(() => import("./MyLagoon.jsx"));
+```
+
+### New since Capri 4
+
+The component must be the **default export** and the file must be named `*.lagoon.*`.
+
+```ts
+export default function MyComponent() {
+  // ....
+}
+```
+
+## Plugin imports
+
+In previous versions, the Capri plugin was exported under `/vite-plugin`. Since Capri v4
+it is now the root export:
+
+```ts
+// Old import:
+import capri from "@capri-js/react/vite-plugin";
+
+// New since Capri v4:
+import capri from "@capri-js/react";
+```
+
+## Render function
+
+In previous versions, the Capri framework adapters exported a `renderToString` function.
+The function still exists but is now exported under `/server`:
+
+```ts
+// Old way:
+import { renderToString } from "@capri-js/react";
+
+// New since Capri v4:
+import { renderToString } from "@capri-js/react/server";
+```

@@ -1,0 +1,138 @@
+---
+title: React
+---
+
+## Create a new site
+
+```bash
+npm init capri my-capri-site -- -e react
+```
+
+This will download and install [capri-js/capri/examples/react](https://github.com/capri-js/capri/tree/main/examples/react).
+
+You can view a [deployed version](https://capri-js.github.io/capri/react/) of the demo on GitHub pages,
+including the [preview SPA](https://capri-js.github.io/capri/react/preview/).
+
+## Entry files
+
+The client entry file is a regular React single page app. We render a `<PreviewBanner>`
+on top of the app, so users know that they are viewing the SPA version, which is usually
+the case when they are editing the site in a CMS.
+
+```tsx
+// src/main.tsx
+
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+
+import { App } from "./App";
+import { PreviewBanner } from "./Preview.jsx";
+
+ReactDOM.createRoot(document.getElementById("app")!).render(
+  <BrowserRouter>
+    <PreviewBanner />
+    <App />
+  </BrowserRouter>
+);
+```
+
+On the server, we use `renderToString` and a `StaticRouter` instead:
+
+```tsx
+// src/main.server.tsx
+
+import { renderToString } from "@capri-js/react/server";
+import { StaticRouter } from "react-router-dom/server.js";
+
+import { App } from "./App";
+
+export async function render(url: string) {
+  return {
+    "#app": await renderToString(
+      <StaticRouter location={url}>
+        <App />
+      </StaticRouter>
+    ),
+  };
+}
+```
+
+## Islands
+
+you can define interactive islands by naming your components `*.island.tsx`:
+
+```tsx
+// src/Counter.island.tsx
+
+import { useState } from "react";
+
+export default function Counter() {
+  const [counter, setCounter] = useState(start);
+  return (
+    <div>
+      <button onClick={() => setCounter((c) => c - 1)}>-</button>
+      <span>{counter}</span>
+      <button onClick={() => setCounter((c) => c + 1)}>+</button>
+    </div>
+  );
+}
+```
+
+## Media queries
+
+You can export an `options` object to hydrate an island as soon as a media query matches.
+The following example will hydrate once the viewport width gets below 700px:
+
+```ts
+import { useEffect, useState } from "react";
+
+export const options = {
+  media: "(max-width:700px)",
+};
+
+export default function MediaQuery() {
+  const [content, setContent] = useState(
+    "Resize your browser below 700px to hydrate this island."
+  );
+  useEffect(() => {
+    setContent("The island has been hydrated.");
+  }, []);
+  return <div>{content}</div>;
+}
+```
+
+## Data fetching
+
+You can use any library with Suspense support. This example uses [SWR](https://swr.vercel.app/):
+
+```ts
+// src/Profile.tsx
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+export function Profile() {
+  const user = useSWR("https://api.example.com", fetcher, { suspsense: true });
+  return <div>Hello {user.name}!</div>;
+}
+```
+
+<Note>
+  To make your code more readable, you should put the loading code into a custom
+  hook.
+</Note>
+
+Add a `<Suspense>` boundary somewhere above in your component tree where you want to render a fallback
+while the data is loading. The fallback will only be shown in the preview SPA. When generating static
+pages, Capri will wait until all data is loaded.
+
+```ts
+// src/App.tsx
+
+export function App() {
+  return (
+    <Suspense fallback={<div>loading...</div>}>
+      <Profile />
+    </Suspense>
+  );
+}
+```
