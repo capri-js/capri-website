@@ -6,6 +6,7 @@ export default {
     preact(),
     capri({
       spa: "/preview",
+      prerender: ["/", "/docs"],
     }),
   ],
 };
