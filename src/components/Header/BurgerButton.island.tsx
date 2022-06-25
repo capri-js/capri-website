@@ -1,5 +1,4 @@
 import { MenuIcon } from "../../icons/MenuIcon";
-import { island } from "@capri-js/preact";
 import styles from "./BurgerButton.module.css";
 
 function openMenu(ev: MouseEvent) {
@@ -23,14 +22,14 @@ function openMenu(ev: MouseEvent) {
   document.body.addEventListener("mouseup", onMouseUp);
 }
 
-export function BurgerButton() {
+export const options = {
+  media: "(max-width: 720px)",
+};
+
+export default function BurgerButton() {
   return (
     <button class={styles.root} onClick={openMenu} aria-label="Menu">
       <MenuIcon />
     </button>
   );
 }
-
-export const BurgerButtonIsland = island(BurgerButton, {
-  media: "(max-width: 720px)",
-});
