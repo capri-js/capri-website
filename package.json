@@ -11,10 +11,9 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@capri-js/preact": "file:.yalc/@capri-js/preact",
+    "@capri-js/preact": "^4.0.0",
     "@capri-js/preact-router": "^4.0.3",
     "@preact/preset-vite": "^2.2.0",
-    "capri": "file:.yalc/capri",
     "contentlayer": "^0.2.5",
     "postcss-preset-env": "^7.7.1",
     "preact": "^10.7.3",
