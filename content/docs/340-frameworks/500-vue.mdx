@@ -1,0 +1,142 @@
+---
+title: Vue
+---
+
+## Create a new site
+
+```bash
+npm init capri my-capri-site -- -e vue
+```
+
+This will download and install [capri-js/capri/examples/vue](https://github.com/capri-js/capri/tree/main/examples/vue).
+
+You can view a [deployed version](https://capri-js.github.io/capri/vue/) of the demo on GitHub pages,
+including the [preview SPA](https://capri-js.github.io/capri/vue/preview/).
+
+## Entry files
+
+The client entry file is a regular vue single page app:
+
+```tsx
+// src/main.tsx
+
+import { createApp } from "vue";
+
+import App from "./App.vue";
+import createRouter from "./router.js";
+
+const app = createApp(App);
+app.use(createRouter());
+
+app.mount("#app");
+```
+
+```tsx
+// src/main.server.tsx
+
+import { createSSRApp } from "vue";
+import { renderToString } from "vue/server-renderer";
+
+import App from "./App.vue";
+import createRouter from "./router.js";
+
+export async function render(url: string) {
+  const app = createSSRApp(App);
+  const router = createRouter();
+  app.use(router);
+  router.push(`http://127.0.0.1${url}`);
+  await router.isReady();
+  const html = await renderToString(app);
+  return {
+    "#app": html,
+  };
+}
+```
+
+## Islands
+
+you can define interactive islands by naming your components `*.island.vue`:
+
+```html
+// src/Counter.island.vue
+
+<script lang="ts">
+  import { defineComponent } from "vue";
+
+  export default defineComponent({
+    props: {
+      start: Number,
+    },
+    data() {
+      return {
+        count: this.start ?? 0,
+      };
+    },
+  });
+</script>
+
+<template>
+  <div>
+    <button @click="count--">-</button>
+    <span>{{ count }}</span>
+    <button @click="count++">+</button>
+  </div>
+</template>
+
+<style scoped>
+  div {
+    display: inline-flex;
+    gap: 0.5em;
+  }
+</style>
+```
+
+## Media queries
+
+You can export an `options` object in the module context to hydrate an island
+as soon as a media query matches. The following example will hydrate once the
+viewport width gets below 700px:
+
+```html
+<script lang="ts">
+  export const options = {
+    media: "(max-width:500px)",
+  };
+</script>
+
+<script setup lang="ts">
+  import { ref, onMounted } from "vue";
+
+  const content = ref(
+    "Resize your browser below 500px to hydrate this island."
+  );
+
+  onMounted(() => {
+    content.value = "The island has been hydrated.";
+  });
+</script>
+
+<template>
+  <div class="box">{{ content }}</div>
+</template>
+```
+
+## Data fetching
+
+Vue components can load data by awaiting a promise in their setup script:
+
+```ts
+// src/Profile.tsx
+
+<script setup lang="ts">
+async function fetchUser() {
+  const res = await fetch("https://api.example.com/user");
+  return res.json();
+}
+const user = await fetchUser();
+</script>
+<template>
+  <span>{{ user.name }}</span>
+</template>
+
+```

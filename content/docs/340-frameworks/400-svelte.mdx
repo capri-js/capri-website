@@ -103,7 +103,7 @@ router.handle(`http://127.0.0.1${url}`);
 
 you can define interactive islands by naming your components `*.island.svelte`:
 
-```tsx
+```html
 // src/Counter.island.svelte
 
 <script>
@@ -131,7 +131,7 @@ You can export an `options` object in the module context to hydrate an island
 as soon as a media query matches. The following example will hydrate once the
 viewport width gets below 700px:
 
-```ts
+```html
 <script context="module">
   export const options = {
     media: "(max-width:700px)",
@@ -146,10 +146,7 @@ viewport width gets below 700px:
   });
 </script>
 
-<div>
-  {content}
-</div>
-
+<div>{content}</div>
 ```
 
 ## Data fetching
@@ -157,18 +154,18 @@ viewport width gets below 700px:
 Svelte components can load data by exporting a `load` function in the
 module context.
 
-```ts
-// src/Profile.tsx
+```html
+// src/Profile.svelte
 
 <script context="module">
   export async function load(props, route, ssrCtx) {
     // The data must be returned as `ssrState`:
     return {
-      ssrState: await fetchData(),
+      ssrState: await fetchUser(),
     };
   }
 
-  async function fetchData() {
+  async function fetchUser() {
     const res = await fetch("https://api.example.com/user");
     return res.json();
   }
@@ -180,11 +177,9 @@ module context.
 
   // When running as SPA we have to fetch the data on mount:
   onMount(async () => {
-    ssrState = await fetchData();
+    ssrState = await fetchUser();
   });
 </script>
 
-<div>
-  Hello {ssrState.name}!
-</div>
+<div>Hello {ssrState.name}!</div>
 ```

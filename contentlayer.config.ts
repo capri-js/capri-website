@@ -1,5 +1,5 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
-import highlight from "rehype-highlight";
+import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeExternalLinks from "rehype-external-links";
@@ -64,7 +64,7 @@ export default makeSource({
   disableImportAliasWarning: true,
   mdx: {
     rehypePlugins: [
-      highlight,
+      rehypeHighlight,
       rehypeSlug,
       rehypeAutolinkHeadings,
       rehypeExternalLinks,

@@ -27,7 +27,7 @@ export function Home() {
           <Grid>
             <GridItem icon={<ComponentIcon />} title="Component-based">
               Capri sites are built with components. Use a framework like React,
-              Preact, Svelte or SolidJS rather than a templating language.
+              Preact, Svelte, Vue or SolidJS rather than a templating language.
             </GridItem>
             <GridItem icon={<IslandIcon />} title="Island architecture">
               Sites built with Capri ship zero KB of JavaScript to the client by
