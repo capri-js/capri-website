@@ -19,7 +19,7 @@ export function Home() {
         <Hero text="Build static sites with interactive islands" />
         <CallToAction>
           <Button href="/docs/getting-started">Get started</Button>
-          <Button href="/docs/why/motivation" outline>
+          <Button href="/docs/why" outline>
             About Capri
           </Button>
         </CallToAction>
