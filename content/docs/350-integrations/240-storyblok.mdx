@@ -1,0 +1,27 @@
+---
+title: Storyblok
+---
+
+[Storyblok](https://www.storyblok.com/) is a headless, API-based CMS as a service.
+
+<Video title="Editing with Storyblok" videoId="726368813" />
+
+When used with Capri, you get a completely static site that does not need a Node server and can be deployed
+to any static hosting service, including S3, GitHub Pages, surge or Firebase Hosting.
+
+We've converted the original [Vue example project](https://github.com/storyblok/bootstrap-nuxt-demo) from Nuxt.js to Capri.
+The [source code for this port](https://github.com/capri-js/storyblok-demo-capri) is on GitHub.
+
+Follow this recipe to create your own fork and deploy it to Netlify:
+
+1. [Register](https://app.storyblok.com/#!/signup) at Storyblok.
+2. Create a new _DEMO Space_.
+3. Go to _Setttings > Access Tokens_ and copy the preview token
+4. Hit the deploy button and paste your token:
+   <div>
+     [![Deploy to
+     Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/capri-js/storyblok-demo-capri)
+   </div>
+5. Watch the build output and copy the preview URL
+6. Open app.storyblok.com and go to _Settings > Visual Editor_
+7. Add the Netlify URL from the log as new preview URL
