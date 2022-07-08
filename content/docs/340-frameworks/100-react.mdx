@@ -111,7 +111,7 @@ You can use any library with Suspense support. This example uses [SWR](https://s
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export function Profile() {
-  const user = useSWR("https://api.example.com", fetcher, { suspsense: true });
+  const user = useSWR("https://api.example.com", fetcher, { suspense: true });
   return <div>Hello {user.name}!</div>;
 }
 ```
