@@ -44,12 +44,15 @@ export async function render(url: string) {
   const app = createSSRApp(App);
   const router = createRouter();
   app.use(router);
-  router.push(`http://127.0.0.1${url}`);
+  router.push(url);
   await router.isReady();
-  const html = await renderToString(app);
-  return {
-    "#app": html,
-  };
+  const { matched } = router.currentRoute.value;
+  if (matched.length) {
+    const html = await renderToString(app);
+    return {
+      "#app": html,
+    };
+  }
 }
 ```
 

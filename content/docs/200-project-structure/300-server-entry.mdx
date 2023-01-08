@@ -11,8 +11,8 @@ for a file called `./src/main.server.tsx`.
 The render function receives the pathname of the page to be rendered as argument and returns the
 markup to be injected into the index.html file.
 
-The markup is returned as object with CSS selectors as keys. This makes it possible to inject
-different chunks of HTML into different locations of the template, for example `head` and `#root`.
+The markup is returned as object with CSS id or type selectors as keys. This makes it possible to inject
+different chunks of HTML into different locations of the template, for example `head` or `#root`.
 
 You can find examples in the [UI frameworks](/docs/frameworks) docs. This is what a typical render
 function for React looks like:
@@ -36,10 +36,3 @@ export const render: RenderFunction = async (url: string) => {
   };
 };
 ```
-
-<Note>
-  This example uses Capri's async `renderToString` function instead of the
-  synchronous
-  [ReactDOMServer.renderToStaticMarkup](https://reactjs.org/docs/react-dom-server.html#rendertostaticmarkup)
-  to support data fetching via suspense.
-</Note>

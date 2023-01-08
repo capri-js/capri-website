@@ -1,0 +1,83 @@
+---
+title: Server-side Rendering
+---
+
+Although Capri is primarily a static site generator, you can also use it
+to dynamically generate HTML on a server or in a serverless environment.
+
+## Generating an SSR bundle
+
+Under the hood, Capri performs an [SSR build](https://vitejs.dev/guide/ssr.html#building-for-production)
+when generating pages. Normally, this SSR bundle is deleted at the end of the build process.
+
+In order to render pages dynamically on demand, we have to get hold of this bundle before it gets deleted.
+This can be done by setting Capri's `target` option in the `vite.config.ts` file:
+
+```js
+export default {
+  plugins: [
+    react(),
+    capri({
+      prerender: false,
+      target: "src/ssr.js",
+    }),
+  ],
+};
+```
+
+This will generate a copy of the SSR bundle at `src/ssr.js`.
+
+<Note>
+  We also set `prerender` to `false` to disable the generation of static pages
+  during the build.
+</Note>
+
+## Importing the SSR bundle
+
+During runtime, we can then import the generated bundle:
+
+```ts
+import { loadSSRModule } from "capri";
+
+// We need to pass an absolute path
+const resolve = (p: string) => new URL(p, import.meta.url).pathname;
+
+async function createApp() {
+  const ssr = await loadSSRModule(resolve("./ssr.js"));
+
+  // We can now use ssr() to render pages ...
+}
+```
+
+## Rendering pages
+
+Finally, we call the `ssr()` function with the requested URL. We can pass an optional `RenderContext`, to support setting HTTP headers and the status code from inside our app.
+
+```ts
+app.use("*", async (req, res) => {
+  // Implement the RenderContext interface and map the calls to
+  // their Express counterparts:
+  const context: RenderContext = {
+    status: (code) => res.status(code),
+    getHeader: (name) => req.get(name),
+    setHeader: (name, value) => res.setHeader(name, value),
+  };
+
+  const html = await ssr(req.originalUrl, context);
+
+  if (res.statusCode === 200) {
+    res.send(html);
+  }
+  res.end();
+});
+```
+
+You can find the complete example (including a dev-server with live reload) here:
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/capri-js/capri-express)
+
+## Serverless and Edge Runtimes
+
+Capri also supports [Cloudflare Pages](https://github.com/capri-js/capri/tree/main/packages/cloudflare)
+and [Vercel](https://github.com/capri-js/capri/tree/main/packages/vercel) deployments.
+
+Here's an [example](https://github.com/fgnass/capri-on-the-edge) that runs as [Vercel Edge Function](https://vercel.com/features/edge-functions).

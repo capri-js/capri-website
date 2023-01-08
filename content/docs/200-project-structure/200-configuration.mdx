@@ -67,9 +67,15 @@ Whereas...
 
 ### `prerender`
 
-Tells Capri which files should be prerendered. Can either be a `string` or
+Tells Capri which files should be pre-rendered. Can either be a `string` or
 `string[]` or an async function that returns an array of strings.
 The default is `/`.
+
+<Note>
+  Unless [`followLinks`](#followlinks) is set to `false` you usually don't have
+  to change this setting, as Capri will automatically follow all links and
+  pre-render all pages it encounters.
+</Note>
 
 ### `followLinks`
 

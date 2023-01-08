@@ -103,7 +103,11 @@ export default function MediaQuery() {
 
 ## Data fetching
 
-You can use any library with Suspense support. This example uses [SWR](https://swr.vercel.app/):
+You can either let your components fetch data or use a router that supports data fetching.
+
+Here is an [example](https://github.com/capri-js/capri-tanstack-router-react) that uses TanStack Router to load some data.
+
+Another option is to use [SWR](https://swr.vercel.app/) version `1.x`:
 
 ```ts
 // src/Profile.tsx
@@ -115,11 +119,6 @@ export function Profile() {
   return <div>Hello {user.name}!</div>;
 }
 ```
-
-<Note>
-  To make your code more readable, you should put the loading code into a custom
-  hook.
-</Note>
 
 Add a `<Suspense>` boundary somewhere above in your component tree where you want to render a fallback
 while the data is loading. The fallback will only be shown in the preview SPA. When generating static
@@ -136,3 +135,11 @@ export function App() {
   );
 }
 ```
+
+<Note>
+  This will only work with SWR 1.x due to [this
+  change](https://github.com/vercel/swr/issues/1906). It's [not entirely
+  clear](https://github.com/capri-js/capri/issues/39) if/how data fetching
+  inside a component is supposed to work in the future, so letting the router
+  fetch data outside of React is currently the best option.
+</Note>
