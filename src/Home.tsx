@@ -16,7 +16,7 @@ export function Home() {
   return (
     <>
       <ColoredBackground>
-        <Hero text="Build static sites with interactive islands" />
+        <Hero text="Static Sites with Interactive Islands" />
         <CallToAction>
           <Button href="/docs/getting-started">Get started</Button>
           <Button href="/docs/why" outline>
@@ -26,16 +26,16 @@ export function Home() {
         <Section>
           <Grid>
             <GridItem icon={<ComponentIcon />} title="Component-based">
-              Capri sites are built with components. Use a framework like React,
-              Preact, Svelte, Vue or SolidJS rather than a templating language.
+              Build your site using standard React or Preact components for a
+              familiar and powerful development experience.
             </GridItem>
-            <GridItem icon={<IslandIcon />} title="Island architecture">
-              Sites built with Capri ship zero KB of JavaScript to the client by
-              default. Pages with interactive islands get partially hydrated.
+            <GridItem icon={<IslandIcon />} title="Island Architecture">
+              Enjoy the benefits of an island-based architecture with zero KB of
+              JavaScript shipped to the client by default.
             </GridItem>
-            <GridItem icon={<PreviewIcon />} title="Live CMS previews">
-              Capri was build with CMS integration in mind. Preview your content
-              changes inside a static SPA without a running server.
+            <GridItem icon={<PreviewIcon />} title="CMS Integration">
+              Seamlessly integrate with CMS like DecapCMS for real-time live
+              previews and static HTML generation for production.
             </GridItem>
           </Grid>
         </Section>
